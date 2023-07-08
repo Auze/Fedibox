@@ -1,0 +1,11 @@
+groups:
+- name: "Hosting"
+  rules:
+  - alert: Test alert from Alertmanager
+    expr: node_disk_info{instance="node-exporter:9100", job="node-exporter",device="nvme0n1"} == 0
+    for: 1m
+    labels:
+      severity: "critical"
+    annotations:
+      summary: "Critical Test Alert title"
+      description: "Critical Test Alert description"

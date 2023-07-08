@@ -1,0 +1,59 @@
+# Monitoring Stack
+
+version: '1'
+services:
+  prometheus:
+    restart: always
+    image: quay.io/prometheus/prometheus:v2.45.0
+    ports:
+      - 9090:9090
+    networks:
+      - internal-net
+      - external-net
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./config/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+
+  alertmanager:
+    restart: always
+    image: quay.io/prometheus/alertmanager:v0.25.0
+    networks:
+      - internal-net
+      - external-net
+    ports:
+      - 9093:9093
+    volumes:
+      - ./config/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+
+  alertmanager-discord:
+    restart: always
+    image: auze/alertmanager-discord:main
+    environment:
+      - DISCORD_WEBHOOK=
+    networks:
+      - internal-net
+      - external-net
+    ports:
+      - 9094:9094
+
+  node-exporter:
+    restart: always
+    image: quay.io/prometheus/node-exporter:v1.6.0
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 9100:9100
+    networks:
+    - internal-net
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+
+networks:
+  external-net:
+  internal-net:
+    internal: true
