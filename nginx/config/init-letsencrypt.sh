@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-domains=(social.glorious-space.eu)
+domains=(fediland.org)
 rsa_key_size=4096
 data_path="/data/reverse-proxy/certbot"
 email="" # Adding a valid address is strongly recommended
