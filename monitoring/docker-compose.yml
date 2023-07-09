@@ -58,7 +58,7 @@ services:
     image: grafana/grafana:10.0.1
     environment:
       - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-polystat-panel
-    user: "1000"
+    user: "${GF_UID}"
     networks:
       - monitoring-net
       - external-net
