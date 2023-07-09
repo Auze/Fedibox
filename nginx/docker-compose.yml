@@ -1,0 +1,29 @@
+# Reverse Proxy
+
+version: '3.3'
+services:
+  reverse-proxy:
+    restart: always
+    image: nginx:alpine
+    networks:
+      - monitoring-net
+      - external-net
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+    - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+    - ./data/certbot/conf:/etc/letsencrypt
+    - ./data/certbot/www:/var/www/certbot
+
+  certbot:
+    restart: always
+    image: certbot/certbot:latest
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+
+networks:
+  external-net:
+  moonitoring-net:
+    internal: true
