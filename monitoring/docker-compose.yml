@@ -58,8 +58,9 @@ services:
     user: "${GF_UID}"
     networks:
       - monitoring-net
+      - external-net
     ports:
-    - 3000:3000
+    - 127.0.0.1:3000:3000
     volumes:
     - '/data/monitoring/grafana:/var/lib/grafana'
 
