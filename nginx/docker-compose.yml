@@ -14,15 +14,15 @@ services:
       - 443:443
     volumes:
     - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
-    - ./data/certbot/conf:/etc/letsencrypt
-    - ./data/certbot/www:/var/www/certbot
+    - /data/reverse-proxy/certbot/conf:/etc/letsencrypt
+    - /data/reverse-proxy/certbot/www:/var/www/certbot
 
   certbot:
     restart: always
     image: certbot/certbot:latest
     volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+      - /data/reverse-proxy/certbot/conf:/etc/letsencrypt
+      - /data/reverse-proxy/certbot/www:/var/www/certbot
 
 networks:
   external-net:
