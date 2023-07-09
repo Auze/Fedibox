@@ -2,8 +2,11 @@
 
 ### Variables
 
+- .env
+
 | Container            | Type | Name            |
 |----------------------|------|-----------------|
+| Grafana              | ENV  | GF_UID          |
 | alertmanager-discord | ENV  | DISCORD_WEBHOOK |
 
 ### ports
@@ -18,5 +21,7 @@
 
 # Launch
 
-`docker compose up -d`
-
+```
+cp sample.env .env
+docker compose up -d
+```
