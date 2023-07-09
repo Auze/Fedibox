@@ -6,7 +6,8 @@ services:
     restart: always
     image: nginx:alpine
     networks:
-      - monitoring-net
+      - internal-net
+      - monitoring_monitoring-net
       - external-net
     ports:
       - 80:80
@@ -25,5 +26,7 @@ services:
 
 networks:
   external-net:
-  moonitoring-net:
+  internal-net:
     internal: true
+  monitoring_monitoring-net:
+    external: true
