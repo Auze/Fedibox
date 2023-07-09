@@ -65,7 +65,7 @@ services:
     ports:
     - 3000:3000
     volumes:
-    - './grafana:/var/lib/grafana'
+    - '/data/monitoring/grafana:/var/lib/grafana'
 
 networks:
   external-net:
