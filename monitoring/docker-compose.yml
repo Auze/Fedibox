@@ -29,7 +29,7 @@ services:
     restart: always
     image: auze/alertmanager-discord:main
     environment:
-      - DISCORD_WEBHOOK=
+      - DISCORD_WEBHOOK="${DISORD_WEBHOOK}"
     networks:
       - monitoring-net
       - external-net
