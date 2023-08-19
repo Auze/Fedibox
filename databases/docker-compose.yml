@@ -1,0 +1,30 @@
+# Databases Stack
+
+version: '3.3'
+services:
+    postgresql:
+      restart: always
+      image: postgres:15.4
+      networks:
+        - internal-net
+        - external-net
+      ports: 
+        - 127.0.0.1:5432:5432
+      volumes: 
+        - '/data/databases/postgres:/var/lib/postgres'
+      environment:
+        - POSTGRES_USER=
+        - POSTGRES_PASSWORD=
+
+    # redis:
+    #   restart: always
+    #   image:
+    #   ports:
+    #     - 
+    #   networks:
+    #     - databases-net
+
+networks:
+  external-net:
+  internal-net:
+    internal: true
