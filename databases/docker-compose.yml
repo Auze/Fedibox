@@ -12,6 +12,9 @@ services:
         - 5432:5432
       volumes: 
         - '/data/databases/postgres:/var/lib/postgres'
+      environment:
+        - POSTGRES_USER=""
+        - POSTGRES_PASSWORD=""
 
     # redis:
     #   restart: always
