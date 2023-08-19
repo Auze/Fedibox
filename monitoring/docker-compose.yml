@@ -54,9 +54,16 @@ services:
     restart: always
     image: grafana/grafana:10.0.1
     environment:
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-polystat-panel
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-polystat-panel
+      GF_DATABASE_TYPE: postgres
+      GF_DATABASE_HOST: postgresql
+      GF_DATABASE_NAME: grafana
+      GF_DATABASE_USER: grafana
+      GF_DATABASE_PASSWORD: grafana
+      GF_DATABASE_SSL_MODE: disable
     user: "${GF_UID}"
     networks:
+      - databases-net
       - monitoring-net
       - external-net
     ports:
