@@ -27,4 +27,4 @@ scrape_configs:
       - targets:
           - "node-exporter:9100"
       - labels:
-        machine_name: fedispace-1
+          machine_name: fedispace-1
