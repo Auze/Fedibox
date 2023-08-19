@@ -11,7 +11,7 @@ services:
       ports: 
         - 127.0.0.1:5432:5432
       volumes: 
-        - '/data/databases/postgres:/var/lib/postgres'
+        - '/data/databases/postgresql/data/:/var/lib/postgresql/data/'
       environment:
         - POSTGRES_USER=
         - POSTGRES_PASSWORD=
