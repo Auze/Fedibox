@@ -8,7 +8,7 @@ services:
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     networks:
       - internal-net
-      - monitoring_monitoring-net
+      - monitoring_internal-net
       - external-net
     ports:
       - 80:80
@@ -31,5 +31,5 @@ networks:
   external-net:
   internal-net:
     internal: true
-  monitoring_monitoring-net:
+  monitoring_internal-net:
     external: true

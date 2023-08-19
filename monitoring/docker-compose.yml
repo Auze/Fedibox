@@ -8,7 +8,7 @@ services:
     ports:
       - 9090:9090
     networks:
-      - monitoring-net
+      - internal-net
     volumes:
       - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./config/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
@@ -17,7 +17,7 @@ services:
     restart: always
     image: quay.io/prometheus/alertmanager:v0.25.0
     networks:
-      - monitoring-net
+      - internal-net
     ports:
       - 9093:9093
     volumes:
@@ -29,7 +29,7 @@ services:
     environment:
       - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
     networks:
-      - monitoring-net
+      - internal-net
     ports:
       - 9094:9094
 
@@ -44,7 +44,7 @@ services:
     ports:
       - 9100:9100
     networks:
-    - monitoring-net
+    - internal-net
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -57,14 +57,14 @@ services:
       GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-polystat-panel
       GF_DATABASE_TYPE: postgres
       GF_DATABASE_HOST: postgresql
-      GF_DATABASE_NAME: grafana
-      GF_DATABASE_USER: grafana
-      GF_DATABASE_PASSWORD: grafana
+      GF_DATABASE_NAME: 
+      GF_DATABASE_USER: 
+      GF_DATABASE_PASSWORD: 
       GF_DATABASE_SSL_MODE: disable
     user: "${GF_UID}"
     networks:
-      - databases-net
-      - monitoring-net
+      - databases_internal-net
+      - internal-net
       - external-net
     ports:
     - 127.0.0.1:3000:3000
@@ -73,5 +73,7 @@ services:
 
 networks:
   external-net:
-  monitoring-net:
+  internal-net:
     internal: true
+  databases_internal-net:
+    external: true

@@ -6,10 +6,10 @@ services:
       restart: always
       image: postgres:15.4
       networks:
-        - databases-net
+        - internal-net
         - external-net
       ports: 
-        - 5432:5432
+        - 127.0.0.1:5432:5432
       volumes: 
         - '/data/databases/postgres:/var/lib/postgres'
       environment:
@@ -26,5 +26,5 @@ services:
 
 networks:
   external-net:
-  databases-net:
+  internal-net:
     internal: true
