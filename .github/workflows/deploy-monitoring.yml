@@ -1,0 +1,82 @@
+name: deploy-monitoring-stack
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    
+
+jobs:
+
+  deploy-monitoring:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: "Setup Secrets #1"
+      uses: cuchi/jinja2-action@v1.2.0
+      with:
+        template: monitoring/config/grafana/grafana.ini.j2
+        output_file: monitoring/config/grafana/grafana.ini
+        strict: true
+        variables: |
+          host_database=${{ secrets.DATABASE_GF_HOST }}
+          name_database=${{ secrets.DATABASE_GF_NAME }}
+          user_database=${{ secrets.DATABASE_GF_USER }}
+          pwd_database=${{ secrets.DATABASE_GF_PWD }}
+          host_email=${{ secrets.SPACE1_EMAIL_HOST }}
+          user_email=${{ secrets.SPACE1_EMAIL_USER }}
+          pwd_email=${{ secrets.SPACE1_EMAIL_PWD }}
+          contact_email=${{ secrets.SPACE1_EMAIL_CONTACT }}
+
+    - name: "Setup Secrets #2"
+      uses: cuchi/jinja2-action@v1.2.0
+      with:
+        template: ./monitoring/sample.env.j2
+        output_file: ./monitoring/.env
+        strict: true
+        variables: |
+          discord_webhook=${{ secrets.DISCORD_WEBHOOK }}
+
+    - name: Tar & Push
+      run: |
+        mkdir ../fediland
+        cp -TR . ../fediland
+        tar -cvf fediland.tar ../fediland
+        sshpass -p '${{ secrets.SPACE1_PWD }}' scp -o StrictHostKeyChecking=no fediland.tar ${{ secrets.SPACE1_USER }}@${{ secrets.SPACE1_HOST }}:/home/github/
+
+    - name: Move & Untar
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SPACE1_HOST }}
+        username: ${{ secrets.SPACE1_USER }}
+        password: ${{ secrets.SPACE1_PWD }}
+        port: ${{ secrets.SPACE1_PORT }}
+        script: |
+          sudo mv /home/github/fediland.tar /opt/
+          sudo tar -xvf /opt/fediland.tar -C /opt/
+
+    - name: Update Stack
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SPACE1_HOST }}
+        username: ${{ secrets.SPACE1_USER }}
+        password: ${{ secrets.SPACE1_PWD }}
+        port: ${{ secrets.SPACE1_PORT }}
+        script: |
+          sudo docker compose -f /opt/fediland/monitoring/docker-compose.yml -p monitoring stop
+          sudo docker compose -f /opt/fediland/monitoring/docker-compose.yml -p monitoring up -d
+
+    - name: Restart Proxy
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SPACE1_HOST }}
+        username: ${{ secrets.SPACE1_USER }}
+        password: ${{ secrets.SPACE1_PWD }}
+        port: ${{ secrets.SPACE1_PORT }}
+        script: |
+          sudo docker compose -f /opt/fediland/nginx/docker-compose.yml -p reverse stop
+          sudo docker compose -f /opt/fediland/nginx/docker-compose.yml -p reverse up -d

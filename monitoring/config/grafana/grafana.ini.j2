@@ -1,0 +1,15 @@
+[database]
+type = postgres
+host = {{ host_database }}
+name = {{ name_database }}
+user = {{ user_database }}
+password = {{ pwd_database }}
+ssl_mode = disable
+
+[smtp]
+enabled = true
+host = {{ host_email }}
+user = {{ user_email }}
+password = {{ pwd_email }}
+startTLS_policy = MandatoryStartTLS
+from_address = {{ contact_email }}

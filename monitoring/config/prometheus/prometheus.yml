@@ -27,3 +27,9 @@ scrape_configs:
       - targets: ["node-exporter:9100"]
         labels:
           machine_name: fedispace-1
+
+  - job_name: docker-stats
+    static_configs:
+    - targets: ['host.docker.internal:9323']
+      labels:
+        alias: 'docker-stats'
