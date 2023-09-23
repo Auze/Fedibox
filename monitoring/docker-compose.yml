@@ -59,6 +59,7 @@ services:
        - 9187:9187
      networks:
        - internal-net
+       - databases_internal-net
      environment:
        DATA_SOURCE_NAME: ${DATA_SOURCE_NAME}
 
