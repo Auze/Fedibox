@@ -9,6 +9,7 @@ services:
       - 9090:9090
     networks:
       - internal-net
+      - external-net
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
@@ -46,11 +47,21 @@ services:
     ports:
       - 9100:9100
     networks:
-    - internal-net
+      - internal-net
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
+
+  postgres-exporter:
+     image: prometheuscommunity/postgres-exporter
+     ports:
+       - 9187:9187
+     networks:
+       - internal-net
+       - databases_internal-net
+     environment:
+       DATA_SOURCE_NAME: ${DATA_SOURCE_NAME}
 
   grafana:
     restart: always
