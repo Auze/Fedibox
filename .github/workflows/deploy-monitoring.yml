@@ -40,6 +40,16 @@ jobs:
           user_database=${{ secrets.DATABASE_GF_USER }}
           pwd_database=${{ secrets.DATABASE_GF_PWD }}
 
+    - name: "Setup Secrets #3"
+      uses: cuchi/jinja2-action@v1.2.0
+      with:
+        template: ./monitoring/config/aws/credentials.j2
+        output_file: ./monitoring/config/aws/credentials
+        strict: true
+        variables: |
+          aws_akid=${{ secrets.CLOUDWATCH_USER }}
+          aws_sak=${{ secrets.CLOUDWATCH_PWD }}
+
     - name: Tar & Push
       run: |
         mkdir ../fediland

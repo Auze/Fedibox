@@ -9,7 +9,6 @@ services:
       - 9090:9090
     networks:
       - internal-net
-      - external-net
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
@@ -54,14 +53,29 @@ services:
       - /:/rootfs:ro
 
   postgres-exporter:
-     image: prometheuscommunity/postgres-exporter
-     ports:
-       - 9187:9187
-     networks:
-       - internal-net
-       - databases_internal-net
-     environment:
-       DATA_SOURCE_NAME: ${DATA_SOURCE_NAME}
+    image: prometheuscommunity/postgres-exporter
+    ports:
+      - 9187:9187
+    networks:
+      - internal-net
+      - databases_internal-net
+    environment:
+      DATA_SOURCE_NAME: ${DATA_SOURCE_NAME}
+
+  yace-exporter:
+    image: auze/yace:v0.55.0
+    restart: no
+    environment:
+      AWS_REGION: eu-west-3
+      AWS_PROFILE: default
+    ports:
+      - 127.0.0.1:5000:5000
+    networks:
+      - internal-net
+      - external-net
+    volumes:
+      - ./config/yace/config.yml:/tmp/config.yml
+      - ./config/aws/credentials:/exporter/.aws/credentials:ro
 
   grafana:
     restart: always
