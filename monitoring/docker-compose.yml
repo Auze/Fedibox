@@ -9,6 +9,7 @@ services:
       - 9090:9090
     networks:
       - internal-net
+      - external-net
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
