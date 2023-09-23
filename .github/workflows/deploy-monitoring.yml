@@ -36,6 +36,9 @@ jobs:
         strict: true
         variables: |
           discord_webhook=${{ secrets.DISCORD_WEBHOOK }}
+          host_database=${{ secrets.DATABASE_GF_HOST }}
+          user_database=${{ secrets.DATABASE_GF_USER }}
+          pwd_database=${{ secrets.DATABASE_GF_PWD }}
 
     - name: Tar & Push
       run: |

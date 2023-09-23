@@ -33,3 +33,7 @@ scrape_configs:
     - targets: ['host.docker.internal:9323']
       labels:
         alias: 'docker-stats'
+
+  - job_name: postgres-exporter
+    static_configs:
+      - targets: ["postgres-exporter:9187"]
