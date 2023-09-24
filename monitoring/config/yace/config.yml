@@ -1,0 +1,63 @@
+apiVersion: v1alpha1
+static:
+  - namespace: AWS/S3
+    name: "s3-metrics"
+    regions:
+      - "eu-west-3"
+      - "us-east-1"
+    metrics:
+      - name: "NumberOfObjects"
+        statistics: ["Average"]
+      - name: "BucketSizeBytes"
+        statistics: ["Average"]
+      - name: "AllRequests"
+        statistics: ["Sum"]
+      - name: "GetRequests"
+        statistics: ["Sum"]
+      - name: "PutRequests"
+        statistics: ["Sum"]
+      - name: "DeleteRequests"
+        statistics: ["Sum"]
+      - name: "HeadRequests"
+        statistics: ["Sum"]
+      - name: "PostRequests"
+        statistics: ["Sum"]
+      - name: "SelectRequests"
+        statistics: ["Sum"]
+      - name: "SelectScannedBytes"
+        statistics: ["Sum"]
+      - name: "SelectReturnedBytes"
+        statistics: ["Sum"]
+      - name: "4xxErrors"
+        statistics: ["Sum"]
+      - name: "5xxErrors"
+        statistics: ["Sum"]
+
+  - namespace: "AWS/SES"
+    name: "ses-metrics"
+    regions:
+      - "eu-west-3"
+    metrics:
+      - name: "Send"
+        statistics: ["Sum"]
+      - name: "Delivery"
+        statistics: ["Sum"]
+      - name: "Bounce"
+        statistics: ["Sum"]
+      - name: "Complaint"
+        statistics: ["Sum"]
+      - name: "Reject"
+        statistics: ["Sum"]
+      - name: "RenderingFailure"
+        statistics: ["Sum"]
+
+  - namespace: "AWS/Billing"
+    name: "billing-metrics"
+    regions:
+      - "eu-west-3"
+      - "us-east-1"
+    metrics:
+      - name: "EstimatedCharges"
+        statistics: ["Maximum"]
+      - name: "Currency"
+        statistics: ["Maximum"]
