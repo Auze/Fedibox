@@ -1,0 +1,6 @@
+save 20 1
+loglevel warning
+requirepass {{ pwd_redis }}
+appendonly yes
+dir /data
+appendfilename "appendonly.aof"
